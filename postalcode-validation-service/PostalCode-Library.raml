@@ -1,0 +1,56 @@
+#%RAML 1.0 Library
+usage: Defines the data types for the postal code validation service
+types:
+  PostalCodeValidationRequest:
+    type: object
+    properties: 
+      postalcode: 
+        type: string
+        required: true
+    displayName: Generic PostalCode validation request
+    description: Generic PostalCode validation request
+    example: |
+      {
+        "postalcode": "4875"
+      }
+  PostalCodeLocationRecord:
+    type: object
+    properties:
+      lat:
+        type: number
+      lng:
+        type: number
+    example: !include location-example.raml
+  PostalCodeValidationRecord:
+    type: object
+    properties:
+      postalcode: string
+      country: string
+      state: string
+      city: string
+      location:
+        type: PostalCodeLocationRecord
+      localities:
+        type: string[]
+      formattedaddress:
+        type: string
+    examples:
+      aussie_example: !include aussie-example-200.raml
+  PostalCodeValidationResponse:
+    type: object
+    properties:
+      message:
+        required: true
+        type: string
+      status:
+        required: true
+        type: number
+      success:
+        required: true
+        type: boolean
+      apistatus:
+        type: string
+      data?:
+        type: PostalCodeValidationRecord
+    examples:
+      aussie_example: !include aussie-complete-response-200.raml

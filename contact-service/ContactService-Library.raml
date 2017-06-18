@@ -1,0 +1,87 @@
+#%RAML 1.0 Library
+usage: Defines the entities used by the Contact Service
+types:
+  ContactType:
+    usage: Creates the enum of contact types   
+    type: string
+    enum: ["store_customer", "donor", "fundrive_user"]
+  ContactProfile:
+    usage: Defines the Contact Profile
+    type: object
+    displayName: Contact Profile
+    description: Defines data elements that comprise a contact profile
+    properties:
+      id:
+        type: number
+        required: false
+        minimum: 1
+        description: Contact Id
+        displayName: Id
+      email:
+        type: string
+        required: true
+        description: Email address
+        displayName: Email
+        pattern: ^\w+@[a-zA-Z_]+?.[a-zA-Z]{2,3}$
+      first_name:
+        required: false
+        type: string
+        description: First name
+      last_name:
+        required: false
+        type: string
+        description: Last name
+      phone:
+        type: string
+        required: true
+        description: Primary phone
+        pattern: ^[0-9]{10}$
+        example: "1234567892"
+      postal_code:
+        type: string
+        required: true
+        description: Postal Code
+      ok_to_send_text:
+        type: boolean | nil
+        default: false
+        required: false
+        description: Okay to send texts to this contact
+      preferred_store:
+        type: number | nil
+        required: false
+        description: Preferred store for contact
+      mobile_number:
+        type: string
+        required: false
+        description: Mobile phone for texting
+        pattern: ^[0-9]{10}$
+        example: "1234567890"
+      date_of_birth:
+        type: datetime | nil
+        required: false
+        description: Contact DOB
+        example: "1991-01-01T00:00:00Z"
+      contact_types: 
+        type: ContactType[]
+        items: ContactType
+        required: true
+      allow_emails:
+        type: boolean
+        default: true
+        required: true
+  ContactProfileResponse: 
+      type: object
+      properties:
+        message:
+          required: true
+          type: string
+        success:
+          required: true
+          type: boolean
+        status:
+          required: true
+          type: number
+        data?:
+          type: ContactProfile
+          displayName: Contact Profile Data
+          description: The contact profile retrieved

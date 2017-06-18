@@ -1,0 +1,96 @@
+#%RAML 1.0 Library
+usage: Defines the entities used in the CRM Service
+types:
+  ContactType:
+    usage: Creates the enum of contact types   
+    type: string
+    enum: ["store_customer", "fundrive_user", "donor"]
+    example: "store_customer"
+  ContactProfile: 
+    usage: Defines the Contact Profile
+    type: object
+    displayName: Contact Profile
+    description: Defines data elements that comprise a contact profile
+    properties:
+      id:
+        type: number | nil
+        required: false
+        description: Contact Id
+        displayName: Id
+      email:
+        type: string
+        required: true
+        description: Email address
+        displayName: Email
+        pattern: ^\w+@[a-zA-Z_]+?.[a-zA-Z]{2,3}$
+      first_name:
+        type: string
+        maxLength: 50
+        description: First name
+      last_name:
+        type: string
+        maxLength: 50
+        description: Last name
+      phone:
+        type: string
+        required: true
+        description: Primary phone
+        pattern: ^[0-9]{10}$
+        example: "1234567892"
+      postal_code:
+        type: string
+        required: true
+        description: Postal Code
+      ok_to_send_text:
+        type: boolean
+        default: false
+        required: false
+        description: Okay to send texts to this contact
+      preferred_store:
+        type: number
+        required: false
+        description: Preferred store for contact
+        minimum: 1000
+        maximum: 9999
+      mobile_number:
+        type: string
+        required: false
+        description: Mobile phone for texting
+        pattern: ^[0-9]{10}$
+        example: "1234567890"
+      allow_emails:
+        type: boolean
+        default: false
+        required: false
+        description: Contact is or wants to be Super Savers Club member
+      date_of_birth:
+        type: string
+        required: false
+        description: Contact DOB
+        pattern: ^\d{4}-\d{2}-\d{2}$
+        example: "1963-08-06"
+      contact_types:
+        type: ContactType[]
+        items: ContactType
+        required: true
+        example: ["store_customer"]
+  ContactProfiles:
+    type: ContactProfile[]
+  ContactProfileResponse: 
+    usage: Defines the response of every method (GET,POST,PUT,DELETE,PATCH,etc...)
+    type: object
+    properties:
+      message:
+        required: true
+        type: string
+        example: "message"
+      success:
+        required: true
+        type: boolean
+      status:
+        required: true
+        type: number
+      data?:
+        type: ContactProfile
+        displayName: Contact Profile Data
+        description: The contact profile retrieved
